@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f9fb27e685ca747b357be200f3fb0c, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  canMove: 1
+  smoothInputSpeed: 0.1
   speed: 10
-  jumpHeight: 3.3
+  jumpHeight: 110
   normalGravity: 5
-  fallingGravity: 10
+  fallingGravity: 20
+  coyoteTime: 0.1
+  jumpBuffer: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  range: 5
-  handSpeed: 20
+  handSpeed: 40
   stopedTimer: 0.3
+  InteractiblesRange: 10

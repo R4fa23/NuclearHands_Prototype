@@ -5,80 +5,137 @@ using UnityEngine.InputSystem;
 
 public class HookHand : MonoBehaviour
 {
-    [SerializeField]
-    Rigidbody2D hand;
-
-    [SerializeField]
-    PlayerStats playerStats;
-    Vector2 startPosition;
-
+    [SerializeField] Transform hand;
+    [SerializeField] Transform backpack;
+    HandInteractible target;
+    CircleCollider2D handCollider;
+    PlayerManager playerManager;
+    Vector3 startPosition;
     bool canHook = true;
     bool startHook;
     bool stoped;
     bool returning;
+    float timer;
+
+    float handSpeed;
+    float interactiblesRange;
+    float stopedTimer;
+
+    private void Awake()
+    {
+        playerManager = FindObjectOfType<PlayerManager>();
+        handCollider = hand.GetComponent<CircleCollider2D>();
+
+        handSpeed = playerManager.playerStats.handSpeed;
+        interactiblesRange = playerManager.playerStats.InteractiblesRange;
+        stopedTimer = playerManager.playerStats.stopedTimer;
+    }
 
     void Start()
     {
-        startPosition = hand.transform.localPosition;
+        startPosition = hand.localPosition;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if (startHook) StartCoroutine(HandGoing());
-        else StopCoroutine(HandGoing());
-
-        if(stoped) StartCoroutine(HandStoped());
-        else StopCoroutine(HandStoped());
-
-        if(returning) StartCoroutine(HandReturning());
-        else StopCoroutine(HandReturning());
+        target = PlayerManager.handTarget;
+        Collided();
+        if (startHook) HandGoing();
+        if (stoped) HandStoped();
+        if (returning) HandReturning();
     }
    
-    IEnumerator HandGoing()
+
+    public void HandGoing()
     {
-        hand.velocity = playerStats.handSpeed * hand.transform.right;
-        float actualDistance = Vector2.Distance(startPosition, hand.transform.localPosition);
+        canHook = false;
+        float speed = handSpeed * Time.deltaTime;
+        float actualDistance = Vector2.Distance(startPosition, hand.localPosition);
+        bool reached;
 
-        while (actualDistance <= playerStats.range) yield return null;
+        if (target)
+        {
+            Vector3 aim = transform.InverseTransformPoint(target.transform.position);
+            hand.localPosition = Vector2.MoveTowards(hand.localPosition, aim, speed);
+            if (hand.localPosition == aim) reached = true;
+            else reached = false;
+        }
+        else
+        {
+            hand.localPosition += hand.right * speed;
+            if (actualDistance >= interactiblesRange) 
+            {
+                hand.localPosition = hand.localPosition;
+                reached = true;
+            }
+            else reached = false;
+        }
 
-        stoped = true;
-        startHook = false;
+        if (reached)
+        {
+            if(target) target.ReachedAction();
+            stoped = true;
+            startHook = false;
+        }
     }
 
-    IEnumerator HandStoped()
+    public void HandStoped()
     {
-        hand.velocity = Vector2.zero;
+        timer += Time.deltaTime;
 
-        yield return new WaitForSeconds(playerStats.stopedTimer);
-                
-        returning = true;
-        stoped = false;
+        if (target) target.SettingVariables(hand, backpack);
+
+        if (timer >= stopedTimer)
+        {
+            timer = 0;
+            returning = true;
+            stoped = false;
+        }
     }    
 
-    IEnumerator HandReturning()
+    public void HandReturning()
     {
-        hand.velocity = -playerStats.handSpeed * hand.transform.right;
+        float actualDistance = Vector2.Distance(startPosition, hand.localPosition);
+        hand.localPosition = Vector3.MoveTowards(hand.localPosition, startPosition, Time.deltaTime * handSpeed / 2);
 
-        float actualDistance = Vector2.Distance(startPosition, hand.transform.localPosition);        
-        
-        yield return new WaitUntil(() => actualDistance <= .1f);
+        if (target) target.HoldingAction();
 
-        hand.velocity = Vector2.zero;
-        hand.transform.localPosition = startPosition;
-        canHook = true;
-        playerStats.StopPlayer(false);
-        returning = false;
-
+        if (actualDistance <= 0.5f)
+        {
+            if (target) target.EndedHookAction();
+            hand.transform.localPosition = startPosition;
+            playerManager.canMove = true;
+            canHook = true;
+            returning = false;
+        }      
     }
 
-
-    public void Hook(InputAction.CallbackContext context)
+    bool Collided()
     {
-        if (context.started && canHook)
+        Vector2 boxSize = new Vector2(handCollider.bounds.size.x, handCollider.bounds.size.y);
+        float boxRange = 0.5f;
+
+        RaycastHit2D raycastHit = Physics2D.BoxCast(handCollider.bounds.center, boxSize, 0, hand.right, boxRange, playerManager.playerStats.groundLayerMask);
+
+        return raycastHit.collider != null;
+    }
+
+    public void Hook()
+    {
+        if (canHook)
         {
-            playerStats.StopPlayer(true);
+            playerManager.canMove = false;
             startHook = true;
-            canHook = false;
         }
+    }
+
+    public void OnEnable()
+    {
+        playerManager.playerStats.HookEvent.AddListener(Hook);
+    }
+
+    public void OnDisable()
+    {
+        playerManager.playerStats.HookEvent.RemoveListener(Hook);
     }
 }

@@ -3,51 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "PlayerStats", menuName = "PlayerSO/PlayerStats") ]
+[CreateAssetMenu(fileName = "PlayerStats", menuName = "PlayerSO/PlayerStats")]
 public class PlayerStats : ScriptableObject
 {
     [Header("Movement")]
-    public bool canMove;
+    public float smoothInputSpeed;
     public float speed;
     public float jumpHeight;
     public float normalGravity;
     public float fallingGravity;
+    public float coyoteTime;
+    public float jumpBuffer;
     public LayerMask groundLayerMask;
 
     [Header("Hook Hand")]
-
-    public float range;
     public float handSpeed;
     public float stopedTimer;
+    public float InteractiblesRange;
 
-    [System.NonSerialized]
-    public UnityEvent stopPlayerEvent;
+    //Inputs Events
+    [System.NonSerialized] public UnityEvent HookEvent;
+    [System.NonSerialized] public UnityEvent JumpEvent;
 
-    
-    public void OnEnable()
+    void OnEnable()
     {
-        canMove = true;
-        if (stopPlayerEvent == null)
-            stopPlayerEvent = new UnityEvent();
-        Debug.Log("OnEnable");
+        if (HookEvent == null) HookEvent = new UnityEvent();
+        if (JumpEvent == null) JumpEvent = new UnityEvent();
     }
 
-
-    public void StopPlayer(bool stop)
+    void OnDisable()
     {
-        if (stop) canMove = false;        
-        else canMove = true;        
-        stopPlayerEvent.Invoke();
+        //Debug.Log("OnDisable");
     }
 
-    public void OnDisable()
+    void OnDestroy()
     {
-        Debug.Log("OnDisable");
+        //Debug.Log("OnDestroy");
     }
 
-    public void OnDestroy()
+    public void JumpTrigger()
     {
-        Debug.Log("OnDestroy");
+        JumpEvent.Invoke();
     }
-    
+    public void HookTrigger()
+    {
+        HookEvent.Invoke();
+    }
+
+    private void Awake()
+    {
+    }
+
 }
