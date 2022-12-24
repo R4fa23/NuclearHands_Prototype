@@ -21,7 +21,7 @@ public class PlayerStats : ScriptableObject
     public float stopedTimer;
     public float InteractiblesRange;
 
-    //InputsWire Events
+    //Link Events
     [System.NonSerialized] public UnityEvent HookEvent;
     [System.NonSerialized] public UnityEvent JumpEvent;
 

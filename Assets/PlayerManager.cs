@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
         //playerStats.canMove = true;
     }
 
-    //InputsWire
+    //Link
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.started) playerStats.JumpTrigger();

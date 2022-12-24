@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InputsWire : MonoBehaviour
+public class Link : MonoBehaviour
 {
     public bool hasEnergy;
     public bool input;

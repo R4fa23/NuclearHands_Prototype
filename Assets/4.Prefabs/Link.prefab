@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5541789484034429264}
   - component: {fileID: 3200227713896948783}
   m_Layer: 0
-  m_Name: Energy Input Sprite
+  m_Name: Link
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5596075195849662462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hasEnergy: 0

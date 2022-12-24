@@ -58,13 +58,14 @@ MonoBehaviour:
   myShape: 0
   hasEnergy: 0
   first: 0
-  enabledInputs: []
-  connectedWires: []
+  linksOutput: 
+  enabledLinks: []
+  connectedLinks: []
   offSet: 0.45
   rayLength: 0.25
   debug: 0
   shape: {fileID: 7378899277683259166}
-  allInputs:
+  allLinks:
   - {fileID: 7144943572196398131}
   - {fileID: 1865243226500779356}
   - {fileID: 3047050136727152500}
@@ -85,15 +86,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wireManager: {fileID: 7378899277683259167}
-  oneInput: 1
-  booleanos: 0101
+  spriteRender: {fileID: 7378899277683259160}
   sprites:
   - {fileID: -171689319, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
   - {fileID: -322296312, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
   - {fileID: 61388006, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
   - {fileID: -834200204, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
   - {fileID: -1906642980, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
-  - {fileID: -313198705, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
   - {fileID: -313198705, guid: 0fb33c4965990be4b949817f36d43658, type: 3}
 --- !u!212 &7378899277683259160
 SpriteRenderer:
@@ -186,7 +185,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite (4)
+      value: Link 4
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -274,7 +273,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &5803584516506125585 stripped
@@ -299,7 +298,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite (2)
+      value: Link 2
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -383,7 +382,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &5950025866752244686 stripped
@@ -404,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite (6)
+      value: Link 6
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -488,7 +487,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &8077686949148971709 stripped
@@ -509,7 +508,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite (1)
+      value: Link 1
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -593,7 +592,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7005729789826961894 stripped
@@ -618,7 +617,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite
+      value: Link
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -711,7 +710,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &6060064256816659961
@@ -727,7 +726,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite (3)
+      value: Link 3
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -816,7 +815,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8015405965442229736
@@ -832,7 +831,7 @@ PrefabInstance:
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
-      value: Energy Input Sprite (5)
+      value: Link 5
       objectReference: {fileID: 0}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_IsActive
@@ -921,6 +920,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609036d18297d44f8f358fb331ec907, type: 3}
+  m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

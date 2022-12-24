@@ -1,174 +1,112 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Shape : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] WireManager wireManager;
-
-    [Header("Ediçao")]    
-    public bool oneInput = true;
-    public bool[] booleanos = new bool[4];
-
-    [Header("Leitura")]
+    [SerializeField] SpriteRenderer spriteRender;
     [SerializeField] Sprite[] sprites;
-
-    int wichSprite;
-    SpriteRenderer spriteRender;
-
-    private void OnValidate()
-    {        
-        //if(oneInput) ChooseInput();
-        //UpdateInputsSpritesAndBools();
-    }
-
-    private void OnEnable()
-    {
-        UpdateShape();
-        //UpdateInputsSpritesAndBools();        
-    }
 
     public void UpdateShape()
     {
-        //inputsPositions = new bool[7];
-
-        wireManager.enabledInputs.Clear();
-        spriteRender = GetComponent<SpriteRenderer>();        
+        int wichSprite = 0;
+        wireManager.enabledLinks.Clear();      
        
-        for (int i = 0; i < wireManager.allInputs.Count; i++)
+        for (int i = 0; i < wireManager.allLinks.Count; i++)
         {
-            wireManager.allInputs[i].gameObject.SetActive(false);
+            wireManager.allLinks[i].gameObject.SetActive(false);
         }
-
-        InputsWire[] allInputs = wireManager.allInputs.ToArray();
 
         switch (wireManager.myShape)
         {
             case WireManager.WireShapes.Line:
+
                 wichSprite = 0;
-                for (int i = 0; i < allInputs.Length; i++)
-                {
-                    if (i == 0)                         
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 4)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                }
+
+                wireManager.allLinks[0].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[0]);
+
+                wireManager.allLinks[4].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[4]);
+
                 break;
             case WireManager.WireShapes.Cross:
+
                 wichSprite = 1;
-                for (int i = 0; i < allInputs.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 2)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 4)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 6)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-    
-                    }
-                }
+
+                wireManager.allLinks[0].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[0]);
+
+                wireManager.allLinks[2].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[2]);
+
+                wireManager.allLinks[4].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[4]);
+                
+                wireManager.allLinks[6].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[6]);
+
                 break;
             case WireManager.WireShapes.T:
+
                 wichSprite = 2;
-                for (int i = 0; i < allInputs.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 2)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 4)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                }
+
+                wireManager.allLinks[0].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[0]);
+
+                wireManager.allLinks[2].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[2]);
+
+                wireManager.allLinks[4].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[4]);
+
                 break;
             case WireManager.WireShapes.L:
+ 
                 wichSprite = 3;
-                for (int i = 0; i < allInputs.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 2)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                }
+
+                wireManager.allLinks[0].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[0]);
+
+                wireManager.allLinks[2].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[2]);
+
                 break;
             case WireManager.WireShapes.Diagonal:
+
                 wichSprite = 4;
-                for (int i = 0; i < allInputs.Length; i++)
-                {
-                    if (i == 1)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 5)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                }
+
+                wireManager.allLinks[1].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[1]);
+
+                wireManager.allLinks[5].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[5]);
+
                 break;
             case WireManager.WireShapes.LDiagonal:
+
                 wichSprite = 5;
-                for (int i = 0; i < allInputs.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                    if (i == 3)
-                    {
-                        allInputs[i].gameObject.SetActive(true);
-                        wireManager.enabledInputs.Add(allInputs[i]);
-                    }
-                }
+
+                wireManager.allLinks[0].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[0]);
+
+                wireManager.allLinks[3].gameObject.SetActive(true);
+                wireManager.enabledLinks.Add(wireManager.allLinks[3]);
+
                 break;
             default:
                 break;
         }
 
-        for (int i = 0; i < sprites.Length; i++)
-        {
-            if (i == wichSprite) spriteRender.sprite = sprites[i];
-        }
+        spriteRender.sprite = sprites[wichSprite];
     }
 
     /*public void SetInputSprite()
     {
-        for (int i = 0; i < inputsPositions.Length; i++)
+        for (int i = 0; i < linksPosition.Length; i++)
         {
-            if (inputsPositions[i] == true) wireInputsPadrao[i].gameObject.SetActive(true);
+            if (linksPosition[i] == true) wireInputsPadrao[i].gameObject.SetActive(true);
             else wireInputsPadrao[i].gameObject.SetActive(false);
         }
         UpdateInputsSpritesAndBools();
