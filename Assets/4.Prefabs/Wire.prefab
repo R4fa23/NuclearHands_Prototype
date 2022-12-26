@@ -57,14 +57,16 @@ MonoBehaviour:
   updateShape: 0
   myShape: 0
   hasEnergy: 0
-  first: 0
+  font: 0
+  updateLinksOutput: 0
   linksOutput: 
   enabledLinks: []
-  connectedLinks: []
+  connectedWires: []
   offSet: 0.45
   rayLength: 0.25
   debug: 0
   shape: {fileID: 7378899277683259166}
+  spriteRenderer: {fileID: 7378899277683259160}
   allLinks:
   - {fileID: 7144943572196398131}
   - {fileID: 1865243226500779356}

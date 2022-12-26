@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9210934519627533506}
   - component: {fileID: 5541789484034429264}
   - component: {fileID: 3200227713896948783}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Link
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.35, z: 0}
   m_LocalScale: {x: 0.13386035, y: 0.13386035, z: 0.13386035}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -124,7 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e58ff1ede5d5a1140bcffee6a121d6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasEnergy: 0
-  input: 0
   wireManager: {fileID: 0}
   spriteRenderer: {fileID: 9210934519627533506}
+  output: 0

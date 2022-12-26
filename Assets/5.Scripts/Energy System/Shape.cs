@@ -98,7 +98,7 @@ public class Shape : MonoBehaviour
             default:
                 break;
         }
-
+        
         spriteRender.sprite = sprites[wichSprite];
     }
 
@@ -131,7 +131,7 @@ public class Shape : MonoBehaviour
 
         foreach (var item in wireInputsLigados)
         {
-            item.SwitchSprite();
+            item.SetLinkOutput();
         }
     }*/
 }

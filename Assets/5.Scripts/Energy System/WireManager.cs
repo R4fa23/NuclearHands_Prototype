@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WireManager : MonoBehaviour
 {
-    [Header("Wire Shape")]
-    public bool updateShape;
     public enum WireShapes { Line, Cross, T, L, Diagonal, LDiagonal }
     public WireShapes myShape;
 
-    [Header("Wire propriedades")]
+    [Header("Wire Energy")]
+    [SerializeField] bool font;
     public bool hasEnergy;
-    [SerializeField] bool first;
-    public List<bool> linksOutput;  //Links que são saidas de energia (É Chamado no Shape)
+    bool fontTurnOnOutputs;
+
+    [Header("Update")]
+    public bool updateShape;
+    public bool updateLinksOutputs;
+
+    [Header("Wire Lists")]
+    public bool[] linksOutput;  //Links que são saidas de energia (É Chamado no Shape)
     public List<Link> enabledLinks; //Links que estão ligados (É Chamado no Shape)
     [SerializeField] List<Link> connectedLinks; //Mudar para wire managers
 
@@ -25,23 +31,28 @@ public class WireManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Shape shape;
+    [SerializeField] SpriteRenderer spriteRenderer;
     public List<Link> allLinks;
-    SpriteRenderer spriteRenderer;
 
+    private void OnEnable()
+    {
+        //shape.UpdateShape();
+        for (int i = 0; i < linksOutput.Length; i++)
+        {
+            if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
+            else enabledLinks[i].SetLinkOutput(false);
+        }
+        StartCoroutine(TimerToCheck());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    private void Update()
-    {
-        if (updateShape)
-        {
-            shape.UpdateShape();
-
-            updateShape = false;
-        }
+        if (font) SetUpFont();
     }
 
     private void OnValidate()
@@ -49,43 +60,50 @@ public class WireManager : MonoBehaviour
         if (updateShape)
         {
             shape.UpdateShape();
-            linksOutput = new List<bool>();          
+            linksOutput = new bool[enabledLinks.Count];
             updateShape = false;
         }
-    }
 
-    private void OnEnable()
-    {
-        shape.UpdateShape();
-        StartCoroutine(CheckForOtherWires());
-    }
-
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-    }   
-
-    IEnumerator CheckForOtherWires()
-    {
-        CheckSurroudings();
-        CheckForEnergy();
-        yield return new WaitForSeconds(0.5f);
-        StartCoroutine(CheckForOtherWires());      
-    }
-
-    public void CheckForEnergy()
-    {
-        if (!first)
+        if (updateLinksOutputs)
         {
-            if (connectedLinks.Count > 0) hasEnergy = true;
-            else hasEnergy = false;
+            for (int i = 0; i < linksOutput.Length; i++)
+            {
+                if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
+                else enabledLinks[i].SetLinkOutput(false);
+            }
+            updateLinksOutputs = false;
+        }
+    }
+
+    private void Update()
+    {
+        if (updateShape)
+        {
+            shape.UpdateShape();
+            updateShape = false;
         }
 
-        if (hasEnergy) spriteRenderer.color = Color.yellow;
-        else spriteRenderer.color = Color.grey;
+        if (updateLinksOutputs)
+        {
+            for (int i = 0; i < linksOutput.Length; i++)
+            {
+                if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
+                else enabledLinks[i].SetLinkOutput(false);
+            }
+            updateLinksOutputs = false;
+        }
+    }
+    
+    IEnumerator TimerToCheck()
+    {
+        SearchForOtherWires(true);
+        if (!font) CheckForEnergy();
+        SearchForOtherWires(false);
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(TimerToCheck());      
     }
 
-    public void CheckSurroudings()
+    public void SearchForOtherWires(bool addLinks)
     {
         //Passa por todos os links da lista, começando pelo que superior central, com o direction
         //apontado para cima. Após a iteração, vai para o próximo e gira a
@@ -93,7 +111,7 @@ public class WireManager : MonoBehaviour
 
         foreach (var link in allLinks)
         {
-            if (link.gameObject.activeSelf)
+            if (link.gameObject.activeSelf && link.output)
             {               
                 switch (allLinks.IndexOf(link))
                 {
@@ -121,27 +139,94 @@ public class WireManager : MonoBehaviour
                     default:
                         break;
                 }
-
+                if (addLinks) AddNearbyOutputLinks();
+                //else RemoveAwayOutputLinks();
                 castPoint = transform.position + direction * offSet;
-                CastRays();
-
-                if (debug) Debug.DrawRay(castPoint, direction * rayLength, Color.cyan, 1f);                
+                if (debug) Debug.DrawRay(castPoint, direction * rayLength, Color.cyan);                
             }
         }
     }
 
-    public void CastRays()
+    public void AddNearbyOutputLinks()
     {
-        RaycastHit2D hit = Physics2D.Raycast(castPoint, direction, rayLength);
+        RaycastHit2D hit = Physics2D.Raycast(castPoint, direction, rayLength, LayerMask.GetMask("Link"));
 
-        if (hit.collider != null && hit.collider.GetComponent<Link>())
-        {
-            if (hit.collider.GetComponent<Link>().hasEnergy)
-            {                
-                if (!connectedLinks.Contains(hit.collider.GetComponent<Link>())) connectedLinks.Add(hit.collider.GetComponent<Link>());
+        if (hit)
+        {           
+            Link nearbyLink = hit.collider.GetComponent<Link>();
+
+            if (!nearbyLink.output)
+            {
+                if (debug) Debug.Log(hit);
+                if (!connectedLinks.Contains(nearbyLink)) connectedLinks.Add(nearbyLink);
             }
-            else connectedLinks.Remove(hit.collider.GetComponent<Link>());
+        }                            
+    }
+
+    public void RemoveAwayOutputLinks()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(castPoint, direction, rayLength, LayerMask.GetMask("Link"));
+  
+        for (int i = 0; i < connectedLinks.Count; i++)
+        {
+            if (connectedLinks[i] != hit || !hit) connectedLinks.Remove(connectedLinks[i]);
         }
-        else connectedLinks.Clear();
+        
+    }
+
+    public void ClearConnectedLinksList()
+    {
+        connectedLinks.Clear();
+    }
+
+    public void CheckForEnergy()
+    {
+        if (connectedLinks.Count > 0)
+        {
+            for (int i = 0; i < connectedLinks.Count; i++)
+            {
+                if (connectedLinks[i].energized)
+                {
+                    hasEnergy = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            foreach (var link in enabledLinks)
+            {
+                if (link) link.energized = false;
+            }
+            hasEnergy = false;
+        }
+
+        if (hasEnergy) spriteRenderer.color = Color.yellow;
+        else spriteRenderer.color = Color.grey;
+    }
+
+    public void SetUpFont()
+    {
+        for (int i = 0; i < linksOutput.Length; i++)
+        {
+            linksOutput[i] = true;
+        }
+
+        for (int i = 0; i < linksOutput.Length; i++)
+        {
+            if (linksOutput[i] == true)
+            {
+                enabledLinks[i].SetLinkOutput(true);
+                enabledLinks[i].energized = true;
+            }
+            else
+            {
+                enabledLinks[i].SetLinkOutput(false);
+                enabledLinks[i].energized = false;
+            }
+        }
+
+        hasEnergy = true;
+        spriteRenderer.color = Color.yellow;
     }
 }
