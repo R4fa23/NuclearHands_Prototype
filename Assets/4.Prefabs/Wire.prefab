@@ -54,14 +54,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2ab0743414cb248b6f26d93fbba1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateShape: 0
   myShape: 0
-  hasEnergy: 0
   font: 0
-  updateLinksOutput: 0
+  hasEnergy: 0
+  updateShape: 0
+  updateLinksOutputs: 0
   linksOutput: 
   enabledLinks: []
-  connectedWires: []
+  connectedLinks:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   offSet: 0.45
   rayLength: 0.25
   debug: 0

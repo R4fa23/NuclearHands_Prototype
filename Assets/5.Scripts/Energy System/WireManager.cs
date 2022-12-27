@@ -20,7 +20,7 @@ public class WireManager : MonoBehaviour
     [Header("Wire Lists")]
     public bool[] linksOutput;  //Links que são saidas de energia (É Chamado no Shape)
     public List<Link> enabledLinks; //Links que estão ligados (É Chamado no Shape)
-    [SerializeField] List<Link> connectedLinks; //Mudar para wire managers
+    [SerializeField] List<Link> connectedLinks;
 
     [Header("Raycast")]
     [SerializeField] float offSet;
@@ -36,12 +36,13 @@ public class WireManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //shape.UpdateShape();
+        shape.UpdateShape();
         for (int i = 0; i < linksOutput.Length; i++)
         {
             if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
             else enabledLinks[i].SetLinkOutput(false);
         }
+
         StartCoroutine(TimerToCheck());
     }
 
@@ -96,14 +97,13 @@ public class WireManager : MonoBehaviour
     
     IEnumerator TimerToCheck()
     {
-        SearchForOtherWires(true);
-        if (!font) CheckForEnergy();
-        SearchForOtherWires(false);
+        SearchForOtherWires();
+        //if (!font) CheckForEnergy();
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(TimerToCheck());      
     }
 
-    public void SearchForOtherWires(bool addLinks)
+    public void SearchForOtherWires()
     {
         //Passa por todos os links da lista, começando pelo que superior central, com o direction
         //apontado para cima. Após a iteração, vai para o próximo e gira a
@@ -111,7 +111,7 @@ public class WireManager : MonoBehaviour
 
         foreach (var link in allLinks)
         {
-            if (link.gameObject.activeSelf && link.output)
+            if (link.gameObject.activeSelf && !link.output)
             {               
                 switch (allLinks.IndexOf(link))
                 {
@@ -139,60 +139,54 @@ public class WireManager : MonoBehaviour
                     default:
                         break;
                 }
-                if (addLinks) AddNearbyOutputLinks();
-                //else RemoveAwayOutputLinks();
                 castPoint = transform.position + direction * offSet;
-                if (debug) Debug.DrawRay(castPoint, direction * rayLength, Color.cyan);                
+                AddNearbyOutputLinks(allLinks.IndexOf(link));
             }
         }
     }
 
-    public void AddNearbyOutputLinks()
+    public void AddNearbyOutputLinks(int indexPosition)
     {
         RaycastHit2D hit = Physics2D.Raycast(castPoint, direction, rayLength, LayerMask.GetMask("Link"));
-
-        if (hit)
-        {           
+        Color color;
+        if (hit.collider)
+        {
             Link nearbyLink = hit.collider.GetComponent<Link>();
 
-            if (!nearbyLink.output)
-            {
-                if (debug) Debug.Log(hit);
-                if (!connectedLinks.Contains(nearbyLink)) connectedLinks.Add(nearbyLink);
-            }
-        }                            
-    }
-
-    public void RemoveAwayOutputLinks()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(castPoint, direction, rayLength, LayerMask.GetMask("Link"));
-  
-        for (int i = 0; i < connectedLinks.Count; i++)
-        {
-            if (connectedLinks[i] != hit || !hit) connectedLinks.Remove(connectedLinks[i]);
+            if (!nearbyLink.output) connectedLinks[indexPosition] = nearbyLink;
+            color = Color.yellow;
         }
-        
-    }
+        else
+        { 
+            color = Color.black;
+            connectedLinks[indexPosition] = null;
+        }
 
-    public void ClearConnectedLinksList()
-    {
-        connectedLinks.Clear();
+        if (debug) Debug.DrawRay(castPoint, direction * rayLength, color);
     }
 
     public void CheckForEnergy()
     {
-        if (connectedLinks.Count > 0)
+
+        foreach (var item in enabledLinks)
         {
-            for (int i = 0; i < connectedLinks.Count; i++)
+            if (hasEnergy && item.output) item.energized = true;
+            else item.energized = false;
+        }
+
+        foreach (var link in allLinks)
+        {
+            if(link.gameObject.activeSelf && link.energized)
             {
-                if (connectedLinks[i].energized)
-                {
-                    hasEnergy = true;
-                    break;
-                }
+
             }
         }
-        else
+        /*foreach (var link in connectedLinks)
+        {
+            if (link) if (link.energized) hasEnergy = true;
+        }*/
+
+        /*else
         {
             foreach (var link in enabledLinks)
             {
@@ -200,7 +194,7 @@ public class WireManager : MonoBehaviour
             }
             hasEnergy = false;
         }
-
+        */
         if (hasEnergy) spriteRenderer.color = Color.yellow;
         else spriteRenderer.color = Color.grey;
     }
