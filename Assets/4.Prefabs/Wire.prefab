@@ -58,8 +58,8 @@ MonoBehaviour:
   font: 0
   hasEnergy: 0
   updateShape: 0
-  updateLinksOutputs: 0
-  linksOutput: 
+  updateLinksInputs: 0
+  linksInputs: 
   enabledLinks: []
   connectedLinks:
   - {fileID: 0}
@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: wire
       value: 
       objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
+      value: 
+      objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
       value: Link 4
@@ -305,6 +309,10 @@ PrefabInstance:
       propertyPath: wire
       value: 
       objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
+      value: 
+      objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
       value: Link 2
@@ -410,6 +418,10 @@ PrefabInstance:
       propertyPath: wire
       value: 
       objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
+      value: 
+      objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
       value: Link 6
@@ -513,6 +525,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: wire
+      value: 
+      objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
       value: 
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
@@ -624,6 +640,10 @@ PrefabInstance:
       propertyPath: wire
       value: 
       objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
+      value: 
+      objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
       value: Link
@@ -733,6 +753,10 @@ PrefabInstance:
       propertyPath: wire
       value: 
       objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
+      value: 
+      objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: m_Name
       value: Link 3
@@ -836,6 +860,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
       propertyPath: wire
+      value: 
+      objectReference: {fileID: 7378899277683259167}
+    - target: {fileID: 3200227713896948783, guid: c49d94379af8086478241f4f854a6036, type: 3}
+      propertyPath: wireManager
       value: 
       objectReference: {fileID: 7378899277683259167}
     - target: {fileID: 5596075195849662462, guid: c49d94379af8086478241f4f854a6036, type: 3}

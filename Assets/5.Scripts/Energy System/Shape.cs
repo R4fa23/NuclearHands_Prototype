@@ -131,7 +131,7 @@ public class Shape : MonoBehaviour
 
         foreach (var item in wireInputsLigados)
         {
-            item.SetLinkOutput();
+            item.SetLinkInput();
         }
     }*/
 }

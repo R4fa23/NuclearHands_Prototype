@@ -4,13 +4,14 @@ using UnityEngine;
 public class Link : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriteRenderer;
-    public bool output;
-    public bool energized;
+    public WireManager wireManager;
+    public bool input;
+    //public bool energized;
 
-    public void SetLinkOutput(bool output)
+    public void SetLinkInput(bool input)
     {
-        this.output = output;
-        if (output) spriteRenderer.color = Color.cyan;
+        this.input = input;
+        if (input) spriteRenderer.color = Color.green;
         else spriteRenderer.color = Color.red;
     }
 }

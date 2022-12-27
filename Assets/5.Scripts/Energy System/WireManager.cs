@@ -11,14 +11,13 @@ public class WireManager : MonoBehaviour
     [Header("Wire Energy")]
     [SerializeField] bool font;
     public bool hasEnergy;
-    bool fontTurnOnOutputs;
 
     [Header("Update")]
     public bool updateShape;
-    public bool updateLinksOutputs;
+    public bool updateLinksInputs;
 
     [Header("Wire Lists")]
-    public bool[] linksOutput;  //Links que são saidas de energia (É Chamado no Shape)
+    public bool[] linksInputs;  //Links que são saidas de energia (É Chamado no Shape)
     public List<Link> enabledLinks; //Links que estão ligados (É Chamado no Shape)
     [SerializeField] List<Link> connectedLinks;
 
@@ -37,10 +36,10 @@ public class WireManager : MonoBehaviour
     private void OnEnable()
     {
         shape.UpdateShape();
-        for (int i = 0; i < linksOutput.Length; i++)
+        for (int i = 0; i < linksInputs.Length; i++)
         {
-            if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
-            else enabledLinks[i].SetLinkOutput(false);
+            if (linksInputs[i] == true) enabledLinks[i].SetLinkInput(true);
+            else enabledLinks[i].SetLinkInput(false);
         }
 
         StartCoroutine(TimerToCheck());
@@ -61,18 +60,18 @@ public class WireManager : MonoBehaviour
         if (updateShape)
         {
             shape.UpdateShape();
-            linksOutput = new bool[enabledLinks.Count];
+            linksInputs = new bool[enabledLinks.Count];
             updateShape = false;
         }
 
-        if (updateLinksOutputs)
+        if (updateLinksInputs)
         {
-            for (int i = 0; i < linksOutput.Length; i++)
+            for (int i = 0; i < linksInputs.Length; i++)
             {
-                if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
-                else enabledLinks[i].SetLinkOutput(false);
+                if (linksInputs[i] == true) enabledLinks[i].SetLinkInput(true);
+                else enabledLinks[i].SetLinkInput(false);
             }
-            updateLinksOutputs = false;
+            updateLinksInputs = false;
         }
     }
 
@@ -84,21 +83,21 @@ public class WireManager : MonoBehaviour
             updateShape = false;
         }
 
-        if (updateLinksOutputs)
+        if (updateLinksInputs)
         {
-            for (int i = 0; i < linksOutput.Length; i++)
+            for (int i = 0; i < linksInputs.Length; i++)
             {
-                if (linksOutput[i] == true) enabledLinks[i].SetLinkOutput(true);
-                else enabledLinks[i].SetLinkOutput(false);
+                if (linksInputs[i] == true) enabledLinks[i].SetLinkInput(true);
+                else enabledLinks[i].SetLinkInput(false);
             }
-            updateLinksOutputs = false;
+            updateLinksInputs = false;
         }
     }
     
     IEnumerator TimerToCheck()
     {
         SearchForOtherWires();
-        //if (!font) CheckForEnergy();
+        if (!font) CheckForEnergy();
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(TimerToCheck());      
     }
@@ -111,7 +110,7 @@ public class WireManager : MonoBehaviour
 
         foreach (var link in allLinks)
         {
-            if (link.gameObject.activeSelf && !link.output)
+            if (link.gameObject.activeSelf && link.input)
             {               
                 switch (allLinks.IndexOf(link))
                 {
@@ -153,8 +152,12 @@ public class WireManager : MonoBehaviour
         {
             Link nearbyLink = hit.collider.GetComponent<Link>();
 
-            if (!nearbyLink.output) connectedLinks[indexPosition] = nearbyLink;
-            color = Color.yellow;
+            if (!nearbyLink.input)
+            {
+                connectedLinks[indexPosition] = nearbyLink;
+                color = Color.green;
+            }
+            else color = Color.black;
         }
         else
         { 
@@ -162,62 +165,40 @@ public class WireManager : MonoBehaviour
             connectedLinks[indexPosition] = null;
         }
 
-        if (debug) Debug.DrawRay(castPoint, direction * rayLength, color);
+        if (debug) Debug.DrawRay(castPoint, direction * rayLength, color, 0.5f);
     }
 
     public void CheckForEnergy()
     {
-
-        foreach (var item in enabledLinks)
+        for (int i = 0; i < connectedLinks.Count; i++)
         {
-            if (hasEnergy && item.output) item.energized = true;
-            else item.energized = false;
-        }
-
-        foreach (var link in allLinks)
-        {
-            if(link.gameObject.activeSelf && link.energized)
+            if (connectedLinks[i] != null)
             {
-
+                if (connectedLinks[i].wireManager.hasEnergy)
+                {
+                    Debug.Log(i);
+                    hasEnergy = true;
+                    break;
+                }
+                else hasEnergy = false;
             }
+            else hasEnergy = false;
         }
-        /*foreach (var link in connectedLinks)
-        {
-            if (link) if (link.energized) hasEnergy = true;
-        }*/
-
-        /*else
-        {
-            foreach (var link in enabledLinks)
-            {
-                if (link) link.energized = false;
-            }
-            hasEnergy = false;
-        }
-        */
+        
         if (hasEnergy) spriteRenderer.color = Color.yellow;
         else spriteRenderer.color = Color.grey;
     }
 
     public void SetUpFont()
     {
-        for (int i = 0; i < linksOutput.Length; i++)
+        for (int i = 0; i < linksInputs.Length; i++)
         {
-            linksOutput[i] = true;
+            linksInputs[i] = false;
         }
 
-        for (int i = 0; i < linksOutput.Length; i++)
+        for (int i = 0; i < linksInputs.Length; i++)
         {
-            if (linksOutput[i] == true)
-            {
-                enabledLinks[i].SetLinkOutput(true);
-                enabledLinks[i].energized = true;
-            }
-            else
-            {
-                enabledLinks[i].SetLinkOutput(false);
-                enabledLinks[i].energized = false;
-            }
+            enabledLinks[i].SetLinkInput(false);
         }
 
         hasEnergy = true;
